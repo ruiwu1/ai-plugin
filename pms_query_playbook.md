@@ -4,6 +4,8 @@
 
 > 实测校准：2026-09-11 逐条回放验证，已修正鉴权头写法、送测端点、审批 approveId 语义等（详见文末「修订记录」）。
 
+> 依赖工具 **quectel-cli**（安装与登录指南：https://ai.phicotek.com/quectel-cli/docs/installation-guide.md）。
+
 ## Step 0: 确认用户查询意图（必须）
 
 **CRITICAL: 动手前必须先确认用户要查什么。PMS 查询分「业务数据」与「流程状态」两类，走不同的接口族，问错 = 结果全错。**
@@ -23,7 +25,7 @@ QPMS 接口鉴权靠请求头 `Authorization: bearer <token>`（**小写 `bearer
 
 ### 方案 A（首选）: agent 沙箱已装 quectel-cli
 
-agent 环境已安装 quectel-cli 并登录（登录态持久化在 QUECTEL_CLI_HOME）时，直接取 token：
+agent 环境已安装 quectel-cli 并登录（登录态持久化在 QUECTEL_CLI_HOME；安装与登录指南：https://ai.phicotek.com/quectel-cli/docs/installation-guide.md）时，直接取 token：
 
 ```shell
 export QUECTEL_CLI_HOME=/home/gem/.aily/.cli/quectel-cli-home

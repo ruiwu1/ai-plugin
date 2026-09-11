@@ -2,6 +2,8 @@
 
 本指南面向 AI Agent。请严格按步骤执行。不要修改 URL，不要猜测其他路径。
 
+> 取 `quectel_token` 也可用 **quectel-cli**（`quectel-cli token`，agent 侧可取免让用户读 cookie）；安装与登录指南：https://ai.phicotek.com/quectel-cli/docs/installation-guide.md
+
 ## Step 0: 先问用户属地（必须）
 
 **CRITICAL: 动手前必须先问用户工作属地。属地决定加班起算时间，问错 = 全部结果作废。**
