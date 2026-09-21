@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "pack": {
+    "id": "quectel-dept-skills",
+    "name": "项目开发部技能包",
+    "version": "1.1.0",
+    "publishedAt": "2026-09-21T07:43:19.739Z"
+  },
+  "fingerprint": "d336972688cad089",
+  "platform": {
+    "name": "项目开发部 Skill 分享平台",
+    "url": "https://scnrhostplnc.feishuapp.com/app/app_17e9s6q40gg"
+  },
+  "install": {
+    "payloadFile": "pack-1.1.0.json",
+    "skillsRootDefault": "~/.claude/skills"
+  },
+  "auth": [
+    {
+      "id": "quectel-sso",
+      "label": "Quectel SSO",
+      "provider": "quectel-cli",
+      "required": true,
+      "covers": [
+        "quectel-pms-query",
+        "qpms-worktime"
+      ],
+      "check": {
+        "bin": "quectel-cli",
+        "args": [
+          "status"
+        ],
+        "expect": "authenticated"
+      },
+      "hint": [
+        "quectel-cli login --json        # 拿设备码，不会阻塞",
+        "quectel-cli login --poll <device_code>   # 浏览器授权后回来轮询",
+        "quectel-cli status             # 期望 authenticated"
+      ],
+      "note": "禁止裸跑 `quectel-cli login`（会阻塞挂死约 10 分钟）。token 约一个月过期。"
+    },
+    {
+      "id": "ms-graph",
+      "label": "Microsoft 365（个人邮箱）",
+      "provider": "msgraph-delegated-setup",
+      "required": false,
+      "covers": [
+        "msgraph-delegated-setup"
+      ],
+      "check": {
+        "bin": "python",
+        "args": [
+          "-c",
+          "import msal, cryptography, requests"
+        ],
+        "expect": null,
+        "failHint": "缺 Python 包（pip install msal cryptography requests）"
+      },
+      "hint": [
+        "python <skills>/msgraph-delegated-setup/templates/auth_login.py --request",
+        "# 浏览器打开 https://microsoft.com/devicelogin 输入 8 位码",
+        "python <skills>/msgraph-delegated-setup/templates/auth_login.py --poll"
+      ],
+      "note": "共享公共 Client ID，各人各自授权；与 Quectel SSO 是两个独立身份源。"
+    },
+    {
+      "id": "lark-cli",
+      "label": "飞书开放能力",
+      "provider": "lark-cli",
+      "required": false,
+      "covers": [],
+      "check": {
+        "bin": "lark-cli",
+        "args": [
+          "auth",
+          "status"
+        ],
+        "expect": null
+      },
+      "hint": [
+        "lark-cli auth login --domain base,docs"
+      ],
+      "note": "本包内暂无技能直接依赖，保留是因为投稿箱与多维表格类技能会用到。"
+    }
+  ],
+  "skills": [
+    {
+      "code": "dept-pack-guide",
+      "name": "部门技能包导航",
+      "base": true,
+      "generated": true,
+      "authRef": null,
+      "requires": {
+        "bins": [],
+        "skills": [
+          "quectel-cli",
+          "kimi-webbridge",
+          "quectel-pms-query",
+          "qpms-worktime",
+          "msgraph-delegated-setup"
+        ]
+      },
+      "fileCount": 1,
+      "sizeBytes": 3946,
+      "sha256": "13a7378af9cdf70e"
+    },
+    {
+      "code": "quectel-cli",
+      "name": "quectel-cli",
+      "base": true,
+      "authRef": "quectel-sso",
+      "requires": {
+        "bins": [
+          "quectel-cli"
+        ],
+        "skills": []
+      },
+      "fileCount": 1,
+      "sizeBytes": 2088,
+      "sha256": "25258b6812184329"
+    },
+    {
+      "code": "kimi-webbridge",
+      "name": "kimi-webbridge",
+      "base": true,
+      "authRef": null,
+      "requires": {
+        "bins": [],
+        "skills": []
+      },
+      "fileCount": 1,
+      "sizeBytes": 1382,
+      "sha256": "35e545de8793622e"
+    },
+    {
+      "code": "quectel-pms-query",
+      "name": "quectel-pms-query",
+      "base": false,
+      "authRef": "quectel-sso",
+      "requires": {
+        "bins": [
+          "quectel-cli",
+          "python"
+        ],
+        "skills": [
+          "quectel-cli"
+        ]
+      },
+      "fileCount": 8,
+      "sizeBytes": 67037,
+      "sha256": "8925a3d074931b91"
+    },
+    {
+      "code": "qpms-worktime",
+      "name": "qpms-worktime",
+      "base": false,
+      "authRef": "quectel-sso",
+      "requires": {
+        "bins": [
+          "node",
+          "quectel-cli"
+        ],
+        "skills": [
+          "quectel-cli"
+        ]
+      },
+      "fileCount": 2,
+      "sizeBytes": 62756,
+      "sha256": "f2c29459e2e09d32"
+    },
+    {
+      "code": "msgraph-delegated-setup",
+      "name": "msgraph-delegated-setup",
+      "base": false,
+      "authRef": "ms-graph",
+      "requires": {
+        "bins": [
+          "python"
+        ],
+        "skills": []
+      },
+      "fileCount": 7,
+      "sizeBytes": 44485,
+      "sha256": "ab674cf6085c49df"
+    }
+  ]
+}
