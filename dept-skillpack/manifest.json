@@ -4,9 +4,9 @@
     "id": "quectel-dept-skills",
     "name": "项目开发部技能包",
     "version": "1.2.0",
-    "publishedAt": "2026-09-22T11:44:51.006Z"
+    "publishedAt": "2026-09-22T12:23:42.698Z"
   },
-  "fingerprint": "4c0f76c5ca2bb925",
+  "fingerprint": "45e6d999d230b057",
   "platform": {
     "name": "项目开发部 Skill 分享平台",
     "url": "https://scnrhostplnc.feishuapp.com/app/app_17e9s6q40gg"
@@ -117,8 +117,8 @@
         "skills": []
       },
       "fileCount": 1,
-      "sizeBytes": 2779,
-      "sha256": "e4ffef9b42deda3c"
+      "sizeBytes": 3012,
+      "sha256": "68e1688b718c1ed3"
     },
     {
       "code": "kimi-webbridge",
@@ -130,8 +130,8 @@
         "skills": []
       },
       "fileCount": 1,
-      "sizeBytes": 1454,
-      "sha256": "e5939692a24d853e"
+      "sizeBytes": 1682,
+      "sha256": "424dc26b0deef27c"
     },
     {
       "code": "quectel-pms-query",

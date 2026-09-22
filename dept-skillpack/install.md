@@ -2,7 +2,7 @@
 
 This guide is for AI Agents. Follow each step exactly. Do NOT modify URLs or guess other paths.
 
-包版本 `1.2.0`，内容指纹 `4c0f76c5ca2bb925`，共 6 个技能 / 20 个文件。
+包版本 `1.2.0`，内容指纹 `45e6d999d230b057`，共 6 个技能 / 20 个文件。
 
 ## 包里有什么
 
