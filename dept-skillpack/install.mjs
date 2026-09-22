@@ -233,6 +233,13 @@ function cmdInstall(pack) {
   const state = readState();
   const prev = state.packs[pack.pack.id];
   const fresh = !prev;
+  if (fresh) {
+    // 沙箱重建后状态文件会丢、技能目录却还在。提示一下，避免同事以为「莫名其妙重装了一遍」。
+    const present = pack.skills.filter((s) => fs.existsSync(path.join(SKILLS_ROOT, s.code))).length;
+    if (present > 0) {
+      console.log(`  ${C.dim(`提示：${SKILLS_ROOT} 下已有 ${present} 个本包技能，但没有安装状态文件（沙箱重建后常见）。本次按首次安装处理，会刷新这些技能。`)}`);
+    }
+  }
   const known = new Set(prev?.skills ?? []);
   const gone = userRemoved(prev);
   let n = 0;
@@ -402,6 +409,12 @@ function runCheck(leg) {
   const r = shellRun(leg.check.bin, leg.check.args ?? []);
   if (r.error && r.error.code === 'ENOENT') return { ok: false, detail: `没装 ${leg.check.bin}` };
   const out = `${r.stdout ?? ''}${r.stderr ?? ''}`.trim();
+  // 「命令存在、但这个 build 没带该子命令」不等于「未就绪」：
+  // 实测部分 lark-cli 发布 build 会报 "command not included in this build"，
+  // 这类情况如实标记为「无法自检」，不要制造假警报。
+  if (/command not included|not included in this build|unknown command|unrecognized (sub)?command|is not a .*command|命令不存在|没有此命令/i.test(out)) {
+    return { ok: null, detail: '无法自检（该版本没有此命令，跳过）' };
+  }
   if (r.status !== 0) {
     // 自检失败时优先给一句人能看懂的话，别把 Python traceback 甩到脸上
     return { ok: false, detail: leg.check.failHint || out.split('\n')[0] || `退出码 ${r.status}` };
@@ -437,20 +450,26 @@ function cmdDoctor(pack) {
   }
   console.log(`\n${C.b('授权腿体检')}\n`);
   let missingLegs = 0;
+  let uncheckedLegs = 0;
   for (const leg of pack.auth) {
     const { ok, detail } = runCheck(leg);
-    if (!ok) missingLegs++;
+    if (ok === false) missingLegs++;      // 「无法自检」（ok=null）不计入未就绪
+    if (ok === null) uncheckedLegs++;
     const tag = ok === true ? C.ok('已就绪') : ok === false ? (leg.required ? C.bad('未就绪') : C.warn('未就绪')) : C.dim('无法自检');
     console.log(`  ${tag}  ${leg.label.padEnd(24)} ${C.dim(detail ?? '')}`);
     console.log(`        ${C.dim(`覆盖：${(leg.covers ?? []).join(', ') || '—'}`)}`);
+    if (leg.id === 'quectel-sso' && ok === false) {
+      console.log(`        ${C.warn('提示')} 登过却报未登录？先核对 ${C.b('QUECTEL_CLI_HOME')} 是否与登录时一致（\`quectel-cli status\` 会打印实际查找的 Credentials 路径）；一条凭据覆盖 PMS 查询与工时填报，别重复登录。`);
+    }
   }
   console.log('');
   if (missing.length) {
     console.log(`${C.bad(`${missing.length} 个外部依赖没装`)}：${missing.map((m) => m.bin).join(', ')}`);
     console.log(`执行 ${C.b('node install.mjs deps')} 看安装方法，或 ${C.b('node install.mjs deps --fix')} 直接装。`);
   }
-  if (missingLegs === 0 && missing.length === 0) console.log(C.ok('全部就绪。'));
-  else if (missingLegs) console.log(`${missingLegs} 条授权腿未就绪。执行：${C.b('node install.mjs auth')}`);
+  if (missingLegs === 0 && missing.length === 0) {
+    console.log(C.ok(`全部就绪。${uncheckedLegs ? `（其中 ${uncheckedLegs} 条腿无法自检，见上方说明）` : ''}`));
+  } else if (missingLegs) console.log(`${missingLegs} 条授权腿未就绪。执行：${C.b('node install.mjs auth')}`);
 }
 
 /**

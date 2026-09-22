@@ -2,7 +2,7 @@
 
 This guide is for AI Agents. Follow each step exactly. Do NOT modify URLs or guess other paths.
 
-包版本 `1.1.0`，内容指纹 `d336972688cad089`，共 6 个技能 / 20 个文件。
+包版本 `1.2.0`，内容指纹 `4c0f76c5ca2bb925`，共 6 个技能 / 20 个文件。
 
 ## 包里有什么
 
@@ -18,7 +18,7 @@ This guide is for AI Agents. Follow each step exactly. Do NOT modify URLs or gue
 ## Step 1: 取包
 
 ```shell
-curl -fsSL -o pack-1.1.0.json https://raw.githubusercontent.com/ruiwu1/ai-plugin/main/dept-skillpack/pack-1.1.0.json
+curl -fsSL -o pack-1.2.0.json https://raw.githubusercontent.com/ruiwu1/ai-plugin/main/dept-skillpack/pack-1.2.0.json
 ```
 
 **CRITICAL: 必须校验拿到的不是错误响应。** 光看首字节是不是 `{` 不够——
@@ -26,7 +26,7 @@ curl -fsSL -o pack-1.1.0.json https://raw.githubusercontent.com/ruiwu1/ai-plugin
 "SyntaxError: Unexpected token" 的形式炸在莫名其妙的地方）：
 
 ```shell
-node -e "const p=require('./pack-1.1.0.json'); if(!p.skills||!Array.isArray(p.skills)) throw new Error('不是技能包：'+JSON.stringify(p).slice(0,120)); console.log('ok',p.skills.length,'个技能')"
+node -e "const p=require('./pack-1.2.0.json'); if(!p.skills||!Array.isArray(p.skills)) throw new Error('不是技能包：'+JSON.stringify(p).slice(0,120)); console.log('ok',p.skills.length,'个技能')"
 ```
 
 没有任何输出、或报错里出现 `status_code` / `Invalid Request` / `Forbidden`，
@@ -45,7 +45,7 @@ head -1 install.mjs    # 必须输出 #!/usr/bin/env node
 ## Step 3: 安装
 
 ```shell
-node install.mjs install --source pack-1.1.0.json
+node install.mjs install --source pack-1.2.0.json
 ```
 
 默认装到 `~/.claude/skills/`。若用户用的是别的 Agent（Cursor / Gemini / Codex…），
@@ -68,8 +68,9 @@ node install.mjs auth        # 缺哪条补哪条；已就绪的会自动跳过
   **CRITICAL: 不要裸跑 `quectel-cli login`**，它会阻塞挂死约 10 分钟。
   必须两阶段：`login --json` 拿设备码 → 用户在浏览器授权 → `login --poll <device_code>`。
   完整流程见 https://ai.phicotek.com/quectel-cli/docs/installation-guide.md
+  **登录一次即可**（这条腿同时覆盖 PMS 查询与工时填报）；第二个技能再要求登录时，先 `quectel-cli status` 核对 `QUECTEL_CLI_HOME`（status 会打印实际查找的 Credentials 路径）——登过却报未登录通常是这里不一致，**不要重复登录**。
 - **Microsoft 365**——个人邮箱，走微软设备码授权，与 Quectel 账号无关。
-- **飞书**——本包内暂无技能直接依赖。
+- **飞书**——本包内暂无技能直接依赖。部分 lark-cli build 未内置 `auth status`，doctor 报「无法自检」属正常，不是失败。
 
 缺外部依赖（没装 quectel-cli / python 等）时：
 
@@ -110,3 +111,5 @@ node install.mjs upgrade     # 只更新真变了的技能
 | `node install.mjs` 报 `SyntaxError: Unexpected token ':'` | 装的是错误 JSON，不是脚本。回到 Step 2 重取 |
 | `deps` 说某依赖"没有通用安装命令" | 内网工具（如 quectel-cli），按部门公告装，别编一个跑不通的命令 |
 | `doctor` 说某条腿未就绪 | 跑 `node install.mjs auth`，照它给的命令走 |
+| `doctor` 报某条腿「无法自检」 | 该 build 没带这条自检命令（如部分 lark-cli 的 auth status）。不是失败，别去重装 |
+| 登过却报未登录 / 换个技能又要鉴权 | 先 `quectel-cli status` 看 Credentials 路径，对比 `QUECTEL_CLI_HOME` 是否与登录时一致；不一致就 export 同一目录后重试，别重复登录 |

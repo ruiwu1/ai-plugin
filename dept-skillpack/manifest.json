@@ -3,16 +3,16 @@
   "pack": {
     "id": "quectel-dept-skills",
     "name": "项目开发部技能包",
-    "version": "1.1.0",
-    "publishedAt": "2026-09-21T07:43:19.739Z"
+    "version": "1.2.0",
+    "publishedAt": "2026-09-22T11:44:51.006Z"
   },
-  "fingerprint": "d336972688cad089",
+  "fingerprint": "4c0f76c5ca2bb925",
   "platform": {
     "name": "项目开发部 Skill 分享平台",
     "url": "https://scnrhostplnc.feishuapp.com/app/app_17e9s6q40gg"
   },
   "install": {
-    "payloadFile": "pack-1.1.0.json",
+    "payloadFile": "pack-1.2.0.json",
     "skillsRootDefault": "~/.claude/skills"
   },
   "auth": [
@@ -35,9 +35,10 @@
       "hint": [
         "quectel-cli login --json        # 拿设备码，不会阻塞",
         "quectel-cli login --poll <device_code>   # 浏览器授权后回来轮询",
-        "quectel-cli status             # 期望 authenticated"
+        "quectel-cli status             # 期望 authenticated",
+        "# 换技能又被要求登录：先核对 QUECTEL_CLI_HOME 与 status 打印的凭据路径，别重复登录"
       ],
-      "note": "禁止裸跑 `quectel-cli login`（会阻塞挂死约 10 分钟）。token 约一个月过期。"
+      "note": "禁止裸跑 `quectel-cli login`（会阻塞挂死约 10 分钟）。token 约一个月过期。一条根凭据同时覆盖 PMS 查询与工时填报——登录一次即可；换技能又被要求登录时，先核对 QUECTEL_CLI_HOME（status 会打印实际查找的凭据路径），别重复登录。"
     },
     {
       "id": "ms-graph",
@@ -80,7 +81,7 @@
       "hint": [
         "lark-cli auth login --domain base,docs"
       ],
-      "note": "本包内暂无技能直接依赖，保留是因为投稿箱与多维表格类技能会用到。"
+      "note": "本包内暂无技能直接依赖；部分 lark-cli build 未内置 auth status，自检会报「无法自检」，属正常现象，本包技能不直接依赖它。"
     }
   ],
   "skills": [
@@ -101,8 +102,8 @@
         ]
       },
       "fileCount": 1,
-      "sizeBytes": 3946,
-      "sha256": "13a7378af9cdf70e"
+      "sizeBytes": 4425,
+      "sha256": "127cf96d5db321b2"
     },
     {
       "code": "quectel-cli",
@@ -116,8 +117,8 @@
         "skills": []
       },
       "fileCount": 1,
-      "sizeBytes": 2088,
-      "sha256": "25258b6812184329"
+      "sizeBytes": 2779,
+      "sha256": "e4ffef9b42deda3c"
     },
     {
       "code": "kimi-webbridge",
@@ -129,8 +130,8 @@
         "skills": []
       },
       "fileCount": 1,
-      "sizeBytes": 1382,
-      "sha256": "35e545de8793622e"
+      "sizeBytes": 1454,
+      "sha256": "e5939692a24d853e"
     },
     {
       "code": "quectel-pms-query",
@@ -147,8 +148,8 @@
         ]
       },
       "fileCount": 8,
-      "sizeBytes": 67037,
-      "sha256": "8925a3d074931b91"
+      "sizeBytes": 69039,
+      "sha256": "e0e77aa27e7be511"
     },
     {
       "code": "qpms-worktime",
@@ -165,8 +166,8 @@
         ]
       },
       "fileCount": 2,
-      "sizeBytes": 62756,
-      "sha256": "f2c29459e2e09d32"
+      "sizeBytes": 73731,
+      "sha256": "68610b9f8579976c"
     },
     {
       "code": "msgraph-delegated-setup",
