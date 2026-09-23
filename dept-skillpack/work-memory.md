@@ -94,8 +94,8 @@ GET https://scnrhostplnc.feishuapp.com/app/app_17e9s6q40gg/openapi/skillpack/ins
 
 ### 妙搭发布
 
-- 运行时代码提交：`7e7961d46391b7c9a00502d2e8df8b03febc011c`
-- release：`7688542759497960671`
+- 运行时代码提交：`708a619e92d0fa76372dea932cdd140e0e613a7b`
+- release：`7688550533707369683`
 - 状态：`finished`
 - `error_logs = 0`
 
