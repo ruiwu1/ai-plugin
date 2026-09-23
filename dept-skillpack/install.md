@@ -42,14 +42,24 @@ head -1 install.mjs    # 必须输出 #!/usr/bin/env node
 首行不是 shebang（例如输出 `{"lang_id"`）说明拿到的是错误 JSON，同样停下来。
 安装器**零依赖**（只用 Node 内置模块），不需要 `npm install`。需要 Node 20+。
 
-## Step 3: 安装
+## Step 3: 识别宿主并安装
+
+先判断当前是什么 Agent，再选择持久化 skills 目录。**不得默认写到 `~/.claude/skills/`**：
+
+| 宿主 | 推荐目录 |
+| --- | --- |
+| Hermes Agent | `$HERMES_HOME/skills`；未设置 `HERMES_HOME` 时用 `~/AppData/Local/hermes/skills`（Windows）或 `~/.hermes/skills`（Linux/macOS） |
+| 飞书 Aily | `~/.aily/workspace/skills` |
+| Claude Code | `~/.claude/skills` |
+| 其他 Agent | 使用该宿主文档规定的持久化 skills 目录；无法确认时先询问用户 |
+
+把实际目录显式传给安装器：
 
 ```shell
-node install.mjs install --source pack-1.2.0.json
+node install.mjs install --source pack-1.2.0.json --dir "<当前宿主的持久化 skills 目录>"
 ```
 
-默认装到 `~/.claude/skills/`。若用户用的是别的 Agent（Cursor / Gemini / Codex…），
-加 `--dir` 指到它自己的 skills 目录。
+不要装进临时工作目录或一次性沙箱；否则会话重建后技能和 `state.json` 会丢失。
 
 **用户手动删掉过的技能不会被重新装回来**——这是预期行为，不要"帮"他恢复。
 
