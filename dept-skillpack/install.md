@@ -49,7 +49,7 @@ head -1 install.mjs    # 必须输出 #!/usr/bin/env node
 | 宿主 | 推荐目录 |
 | --- | --- |
 | Hermes Agent | `$HERMES_HOME/skills`；未设置 `HERMES_HOME` 时用 `~/AppData/Local/hermes/skills`（Windows）或 `~/.hermes/skills`（Linux/macOS） |
-| 飞书 Aily | `~/.aily/workspace/skills` |
+| 飞书 Aily | 常见为 `~/.aily/workspace/skills`；安装前先确认该环境实际加载的 skills 目录 |
 | Claude Code | `~/.claude/skills` |
 | 其他 Agent | 使用该宿主文档规定的持久化 skills 目录；无法确认时先询问用户 |
 

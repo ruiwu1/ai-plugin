@@ -171,7 +171,7 @@
         <div class="grid" style="margin-top:12px">
           <article class="card"><h3>同一根凭据只登录一次</h3><p>Quectel SSO 同时覆盖 PMS 查询和工时填报。再次要求登录时，先核对 <code>QUECTEL_CLI_HOME</code> 与 <code>quectel-cli status</code> 输出的 Credentials 路径。</p></article>
           <article class="card"><h3>浏览器能力按优先级探测</h3><p>直连接口 → 宿主 Agent 自带浏览器 → CDP → Kimi WebBridge。不要默认让同事安装扩展。</p></article>
-          <article class="card"><h3>宿主持久化目录</h3><ul><li>Hermes：<code>$HERMES_HOME/skills</code></li><li>飞书 Aily：<code>~/.aily/workspace/skills</code></li><li>Claude Code：<code>~/.claude/skills</code></li></ul></article>
+          <article class="card"><h3>宿主持久化目录</h3><ul><li>Hermes：<code>$HERMES_HOME/skills</code></li><li>飞书 Aily：常见为 <code>~/.aily/workspace/skills</code>，安装前确认实际加载目录</li><li>Claude Code：<code>~/.claude/skills</code></li></ul></article>
           <article class="card"><h3>写操作边界</h3><p>安装与登录不代表允许执行工时提交、发邮件等业务写操作。任何业务写入仍需用户明确确认。</p></article>
         </div>
       </section>

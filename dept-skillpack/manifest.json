@@ -4,7 +4,7 @@
     "id": "quectel-dept-skills",
     "name": "项目开发部技能包",
     "version": "1.2.0",
-    "publishedAt": "2026-09-22T12:23:42.698Z"
+    "publishedAt": "2026-09-23T02:11:55.353Z"
   },
   "fingerprint": "45e6d999d230b057",
   "platform": {
@@ -13,7 +13,7 @@
   },
   "install": {
     "payloadFile": "pack-1.2.0.json",
-    "skillsRootDefault": "~/.claude/skills"
+    "skillsRootDefault": "<由安装器按宿主探测；推荐显式 --dir>"
   },
   "auth": [
     {

@@ -61,11 +61,17 @@ const SOURCE = arg('source', process.env.SKILLPACK_SOURCE || defaultSource());
 /** 平台开放接口的 API Key；平台整站在飞书 SSO 后面，机器取包只能走 /openapi + Key */
 const API_KEY = arg('key', process.env.SKILLPACK_API_KEY || '');
 const API_KEY_HEADER = arg('key-header', process.env.SKILLPACK_API_KEY_HEADER || '');
+function detectSkillsRoot() {
+  if (process.env.HERMES_HOME) return path.join(process.env.HERMES_HOME, 'skills');
+  if (process.platform === 'win32' && process.env.LOCALAPPDATA) {
+    return path.join(process.env.LOCALAPPDATA, 'hermes', 'skills');
+  }
+  if (process.env.AILY_WORKSPACE) return path.join(process.env.AILY_WORKSPACE, 'skills');
+  return path.join(os.homedir(), '.claude', 'skills');
+}
+
 const SKILLS_ROOT = path.resolve(
-  (arg('dir', process.env.SKILLPACK_SKILLS_ROOT || path.join(os.homedir(), '.claude', 'skills'))).replace(
-    /^~(?=[\\/]|$)/,
-    os.homedir(),
-  ),
+  (arg('dir', process.env.SKILLPACK_SKILLS_ROOT || detectSkillsRoot())).replace(/^~(?=[\\/]|$)/, os.homedir()),
 );
 const HOME = path.resolve(
   (arg('home', process.env.SKILLPACK_HOME || path.join(os.homedir(), '.skillpack'))).replace(/^~(?=[\\/]|$)/, os.homedir()),
