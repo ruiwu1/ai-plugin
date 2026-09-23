@@ -63,10 +63,9 @@ const API_KEY = arg('key', process.env.SKILLPACK_API_KEY || '');
 const API_KEY_HEADER = arg('key-header', process.env.SKILLPACK_API_KEY_HEADER || '');
 function detectSkillsRoot() {
   if (process.env.HERMES_HOME) return path.join(process.env.HERMES_HOME, 'skills');
-  if (process.platform === 'win32' && process.env.LOCALAPPDATA) {
-    return path.join(process.env.LOCALAPPDATA, 'hermes', 'skills');
-  }
   if (process.env.AILY_WORKSPACE) return path.join(process.env.AILY_WORKSPACE, 'skills');
+  const ailyWorkspace = path.join(os.homedir(), '.aily', 'workspace');
+  if (fs.existsSync(ailyWorkspace)) return path.join(ailyWorkspace, 'skills');
   return path.join(os.homedir(), '.claude', 'skills');
 }
 
