@@ -152,7 +152,7 @@ https://raw.githubusercontent.com/ruiwu1/ai-plugin/main/dept-skillpack/install.m
 
 ```bash
 # 公开入口真实网络回归
-node pack/check-public-entry.mjs --expect-guide-v2
+node pack/check-public-entry.mjs
 
 # 服务端与 GitHub 模板一致性
 node pack/check-templates.mjs --version 1.2.0
